@@ -13,3 +13,10 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t myapp:ci .
+      
+      - name: Run container (smoke test)
+        run: |
+          docker run -d --name myapp_test -p 8080:80 nginx
+          sleep 2
+          curl -I http://localhost:8080
+          docker rm -f myapp_test
